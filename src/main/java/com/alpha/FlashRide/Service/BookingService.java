@@ -1,7 +1,6 @@
 package com.alpha.FlashRide.Service;
 
-
-	import java.util.ArrayList;
+import java.util.ArrayList;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -20,78 +19,69 @@ import com.alpha.FlashRide.entity.Vehicle;
 
 import jakarta.transaction.Transactional;
 
-	@Service
-	public class BookingService {
- 
-		@Autowired
-		private MailService mailservice;
-		
-	    @Autowired
-	    private CustomerRepository customerRepository;
+@Service
+public class BookingService {
 
-	    @Autowired
-	    private DriverRepository driverRepository;
 
-	    @Autowired
-	    private VehicleRepository vehicleRepository;
+	@Autowired
+	private CustomerRepository customerRepository;
 
-	    @Autowired
-	    private BookingRepository bookingRepository;
+	@Autowired
+	private DriverRepository driverRepository;
 
-	    // 1️⃣ Book a vehicle
-	    @Transactional
-	    public ResponseStructure<Booking> bookVehicle(Long customerMobile, BookingDTO dto) {
+	@Autowired
+	private VehicleRepository vehicleRepository;
 
-	        Customer customer = customerRepository.findByMobileNo(customerMobile)
-	                .orElseThrow(() -> new RuntimeException("Customer not found"));
+	@Autowired
+	private BookingRepository bookingRepository;
 
-	        Vehicle vehicle = vehicleRepository.findById(dto.getVehicleid())
-	                .orElseThrow(() -> new RuntimeException("Vehicle not found"));
+	// 1️⃣ Book a vehicle
+	@Transactional
+	public ResponseStructure<Booking> bookVehicle(Long customerMobile, BookingDTO dto) {
 
-	        // Create booking
-	        Booking booking = new Booking();
-	        booking.setCustomer(customer);
-	        booking.setVehicle(vehicle);
-	        booking.setSourceLoc(dto.getSourceLoc());
-	        booking.setDestinationLoc(dto.getDestinationLoc());
-	        booking.setDistanceTravelled(dto.getDistanceTravelled());
-	        booking.setFare(dto.getFare());
-	        booking.setEstimatedTime(dto.getEstimatedTime());
-	        booking.setBookingStatus("booked"); // consistent lowercase
+		Customer customer = customerRepository.findByMobileNo(customerMobile)
+				.orElseThrow(() -> new RuntimeException("Customer not found"));
 
-	        bookingRepository.save(booking);
+		Vehicle vehicle = vehicleRepository.findById(dto.getVehicleid())
+				.orElseThrow(() -> new RuntimeException("Vehicle not found"));
 
-	        // Add booking to customer and set flag
-	        customer.getBookinglist().add(booking);
-	        customer.setBookingflag(true);  // flag true immediately
-	        customerRepository.save(customer);
+		// Create booking
+		Booking booking = new Booking();
+		booking.setCustomer(customer);
+		booking.setVehicle(vehicle);
+		booking.setSourceLoc(dto.getSourceLoc());
+		booking.setDestinationLoc(dto.getDestinationLoc());
+		booking.setDistanceTravelled(dto.getDistanceTravelled());
+		booking.setFare(dto.getFare());
+		booking.setEstimatedTime(dto.getEstimatedTime());
+		booking.setBookingStatus("booked"); // consistent lowercase
 
-	        // Add booking to driver
-	        Driver driver = vehicle.getDriver();
-	        if (driver != null) {
-	            if (driver.getBookings() == null)
-	                driver.setBookings(new ArrayList<>());
-	            driver.getBookings().add(booking);
-	        }
+		bookingRepository.save(booking);
 
-	        // Update vehicle status
-	        vehicle.setAvailableStatus("booked");
-	        vehicleRepository.save(vehicle);
+		// Add booking to customer and set flag
+		customer.getBookinglist().add(booking);
+		customer.setBookingflag(true); // flag true immediately
+		customerRepository.save(customer);
 
-	        // Response
-	        ResponseStructure<Booking> rs = new ResponseStructure<>();
-	        rs.setStatuscode(HttpStatus.OK.value());
-	        rs.setMessage("Vehicle successfully booked");
-	        rs.setData(booking);
-
-	        return rs;
-	    }
-
-		public void bookveh() {
-			// TODO Auto-generated method stub
-			//logic for booking , cus,veh
-			mailservice.sendMail("bhavaniprasadgoud278@gmail.com","booked vehicle","dfhgdhghjfhjgfjhf");
+		// Add booking to driver
+		Driver driver = vehicle.getDriver();
+		if (driver != null) {
+			if (driver.getBookings() == null)
+				driver.setBookings(new ArrayList<>());
+			driver.getBookings().add(booking);
 		}
+
+		// Update vehicle status
+		vehicle.setAvailableStatus("booked");
+		vehicleRepository.save(vehicle);
+
+		// Response
+		ResponseStructure<Booking> rs = new ResponseStructure<>();
+		rs.setStatuscode(HttpStatus.OK.value());
+		rs.setMessage("Vehicle successfully booked");
+		rs.setData(booking);
+
+		return rs;
 	}
 
-
+}

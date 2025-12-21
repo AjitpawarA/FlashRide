@@ -25,8 +25,5 @@ public class BookingController {
 		ResponseStructure<Booking> response = bookingservice.bookVehicle(mobileNo, bookingdto);
 	    return ResponseEntity.ok(response);
 	}
-	@GetMapping("/bookvnotification")
-	public void bookVehi() {
-		bookingservice.bookveh();
-	}
+
 }
