@@ -20,6 +20,8 @@ public class RegisterDriverVehicleDTO {
     private String longitude;
     private Integer pricePerKM;
     private int averageSpeed;
+    
+    private String password;
 
 
     public RegisterDriverVehicleDTO() {
@@ -170,7 +172,8 @@ public class RegisterDriverVehicleDTO {
 
 	public RegisterDriverVehicleDTO(Long licenseNo, String upiID, String driverName, Integer age, long mobileNo,
 			String gender, String mailId, String vehicleName, String vehicleNo, String vehicleType, String model,
-			Integer vehicleCapacity, String latitude, String longitude, Integer pricePerKM, int averageSpeed) {
+			Integer vehicleCapacity, String latitude, String longitude, Integer pricePerKM, int averageSpeed,
+			String password) {
 		super();
 		this.licenseNo = licenseNo;
 		this.upiID = upiID;
@@ -188,6 +191,17 @@ public class RegisterDriverVehicleDTO {
 		this.longitude = longitude;
 		this.pricePerKM = pricePerKM;
 		this.averageSpeed = averageSpeed;
+		this.password=password;
+	}
+
+
+	public String getPassword() {
+		return password;
+	}
+
+
+	public void setPassword(String password) {
+		this.password = password;
 	}
     
 }

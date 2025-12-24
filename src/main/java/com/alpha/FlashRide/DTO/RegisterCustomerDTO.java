@@ -9,6 +9,15 @@ public class RegisterCustomerDTO {
 	private String emailId;
 	private String latitude;
 	private String longitude;
+	private String password;
+
+	public String getPassword() {
+		return password;
+	}
+
+	public void setPassword(String password) {
+		this.password = password;
+	}
 
 	public String getName() {
 		return name;
@@ -67,7 +76,7 @@ public class RegisterCustomerDTO {
 	}
 
 	public RegisterCustomerDTO(String name, int age, String gender, long mobileNo, String emailId, String latitude,
-			String longitude) {
+			String longitude,String passowrd) {
 		super();
 		this.name = name;
 		this.age = age;
@@ -76,6 +85,7 @@ public class RegisterCustomerDTO {
 		this.emailId = emailId;
 		this.latitude = latitude;
 		this.longitude = longitude;
+		this.password=passowrd;
 	}
 
 	public RegisterCustomerDTO() {

@@ -19,11 +19,13 @@ import com.alpha.FlashRide.Repository.BookingRepository;
 import com.alpha.FlashRide.Repository.CustomerRepository;
 import com.alpha.FlashRide.Repository.DriverRepository;
 import com.alpha.FlashRide.Repository.PaymentRepository;
+import com.alpha.FlashRide.Repository.UserrRepo;
 import com.alpha.FlashRide.Repository.VehicleRepository;
 import com.alpha.FlashRide.entity.Booking;
 import com.alpha.FlashRide.entity.Customer;
 import com.alpha.FlashRide.entity.Driver;
 import com.alpha.FlashRide.entity.Payment;
+import com.alpha.FlashRide.entity.Userr;
 import com.alpha.FlashRide.entity.Vehicle;
 import com.alpha.FlashRide.exception.DriverNotFoundException;
 
@@ -46,6 +48,10 @@ public class DriverService {
 	private BookingRepository br;
 	@Autowired
 	private PaymentRepository pr;
+	
+
+	@Autowired
+	private UserrRepo userrRepo;
 
 	@Value("${locationiq.api.key}")
 	private String apiKey;
@@ -96,7 +102,13 @@ public class DriverService {
 		v.setAvgSpeed(dto.getAverageSpeed());
 		v.setDriver(d);
 		d.setVehicle(v);
-
+		
+		Userr user = new Userr();
+		user.setMobno(dto.getMobileNo());
+		user.setPassword(dto.getPassword());
+		user.setRole("DRIVER");
+		
+		userrRepo.save(user);
 		Driver savedDriver = dr.save(d);
 
 		ResponseStructure<Driver> rs = new ResponseStructure<>();

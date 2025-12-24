@@ -12,10 +12,19 @@ package com.alpha.FlashRide.entity;
 	import jakarta.persistence.Id;
 
 	import jakarta.persistence.OneToMany;
+import jakarta.persistence.OneToOne;
 
 	@Entity
 	public class Customer {
 		
+		public Userr getUserr() {
+			return userr;
+		}
+
+		public void setUserr(Userr userr) {
+			this.userr = userr;
+		}
+
 		@Id
 		@GeneratedValue(strategy = GenerationType.AUTO)
 		private int id;
@@ -27,6 +36,8 @@ package com.alpha.FlashRide.entity;
 		private String currentLoc;
 		private int penaltyCount = 0;
 
+		@OneToOne
+		private Userr userr;
 		
 		@Column(name="bookingflag")
 		private boolean bookingflag = false;
@@ -108,7 +119,7 @@ package com.alpha.FlashRide.entity;
 		}
 
 		public Customer(String name, int age, String gender, long mobileNo, String emailId, String currentLoc,
-				boolean bookingflag, List<Booking> bookinglist) {
+				boolean bookingflag, List<Booking> bookinglist, Userr userr) {
 			super();
 			this.name = name;
 			this.age = age;
@@ -118,6 +129,7 @@ package com.alpha.FlashRide.entity;
 			this.currentLoc = currentLoc;
 			this.bookingflag = bookingflag;
 			this.bookinglist = bookinglist;
+			this.userr=userr;
 		}
 
 		public Customer() {

@@ -10,6 +10,19 @@ import com.alpha.FlashRide.ResponseStructure;
 
 @RestControllerAdvice
 public class GlobalExceptionHandler {
+	
+	  @ExceptionHandler(MobileAlreadyRegisteredException.class)
+	    public ResponseEntity<ResponseStructure<String>> handleMobileExists(
+	            MobileAlreadyRegisteredException ex) {
+
+	        ResponseStructure<String> rs = new ResponseStructure<>();
+	        rs.setStatuscode(HttpStatus.BAD_REQUEST.value());
+	        rs.setMessage(ex.getMessage());
+	        rs.setData("Registration failed");
+
+	        return new ResponseEntity<>(rs, HttpStatus.BAD_REQUEST);
+	    }
+
 
     @ExceptionHandler(DriverNotFoundException.class)
     public ResponseEntity<ResponseStructure<String>> handleDriverNotFound(DriverNotFoundException ex) {
